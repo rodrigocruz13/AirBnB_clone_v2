@@ -44,6 +44,22 @@ class HBNBCommand(cmd.Cmd):
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
             obj.save()
+            store = storage.all()
+            key = my_list[0] + '.' + obj.id
+            v = store[key]
+            if len(my_list) > 1:
+                for i in range(1, len(my_list)):
+                    new_attr = my_list[i].split("=")
+                    if "_" in new_attr[1]:
+                        new_attr[1] = new_attr[1].replace("_", " ")
+                    if new_attr[1][0] == '"' and new_attr[1][len(
+                            new_attr[1]) - 1] == '"':
+                        new_attr[1] = new_attr[1][1:-1]
+                    try:
+                        v.__dict__[new_attr[0]] = eval(new_attr[1])
+                    except Exception:
+                        v.__dict__[new_attr[0]] = new_attr[1]
+                    v.save()
             print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")
@@ -210,15 +226,15 @@ class HBNBCommand(cmd.Cmd):
         new_list.append(args[0])
         try:
             my_dict = eval(
-                args[1][args[1].find('{'):args[1].find('}')+1])
+                args[1][args[1].find('{'):args[1].find('}') + 1])
         except Exception:
             my_dict = None
         if isinstance(my_dict, dict):
-            new_str = args[1][args[1].find('(')+1:args[1].find(')')]
+            new_str = args[1][args[1].find('(') + 1:args[1].find(')')]
             new_list.append(((new_str.split(", "))[0]).strip('"'))
             new_list.append(my_dict)
             return new_list
-        new_str = args[1][args[1].find('(')+1:args[1].find(')')]
+        new_str = args[1][args[1].find('(') + 1:args[1].find(')')]
         new_list.append(" ".join(new_str.split(", ")))
         return " ".join(i for i in new_list)
 
