@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """This is the Database storage class for AirBnB"""
-import json
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from models.user import User
 from models.state import State
 from models.city import City
@@ -9,10 +8,12 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from os import getenv
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import (create_engine)
 
+#class_dc = {'BaseModel': BaseModel, 'User': User,
+            #'State': State, 'City': City, 'Amenity': Amenity,
+            #'Place': Place, 'Review': Review}
 
 class DBStorage:
     """This class serializes instances to a JSON file and
@@ -26,35 +27,56 @@ class DBStorage:
 
     def __init__(self):
         ''' Comentario cool '''
-        env_user=getenv('HBNB_MYSQL_USER')
-        env_passwd=getenv('HBNB_MYSQL_PWD')
-        env_host=getenv('HBNB_MYSQL_HOST')
-        env_db=getenv('HBNB_MYSQL_DB')
-        self._engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                     .format(env_user, env_passwd,
-                                             env_host, env_db),
-                                     pool_pre_ping=True))
-        if 'test' == getenv('HBNB_ENV'):
+        env_1 = getenv('HBNB_ENV')
+        user_1 = getenv('HBNB_MYSQL_USER')
+        pwd_1 = getenv('HBNB_MYSQL_PWD')
+        host_1 = getenv('HBNB_MYSQL_HOST')
+        db_1 = getenv('HBNB_MYSQL_DB')
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                     .format(user_1, pwd_1,
+                                             host_1, db_1),
+                                     pool_pre_ping=True)
+        self.reload()
+        if 'test' == env_1:
             Base.metadata.drop_all(tables)
 
     def all(self, cls=None):
         ''' Otro Comentario Cool '''
-        sess = sessionmaker()
-        sess.configure(bind=engine)
-        self.__session = sess()
         class_ls = []
+        key_val = {}
         if cls:
-            try:
-                class_ls = self.__session.query(eval(cls)).all()
-            except:
-                class_ls = self.__session.query(cls).all()
+            class_ls = self.__session.query(cls).all()
         else:
-            class_ls += self.__session.query(User).all()
+            #class_ls += self.__session.query(User).all()
             class_ls += self.__session.query(State).all()
             class_ls += self.__session.query(City).all()
-            class_ls += self.__session.query(Amenity).all()
-            class_ls += self.__session.query(Place).all()
-            class_ls += self.__session.query(Review).all()
+            #class_ls += self.__session.query(Amenity).all()
+            #class_ls += self.__session.query(Place).all()
+            #class_ls += self.__session.query(Review).all()
         for element in class_ls:
             form = '{}.{}'.format(type(class_ls).__name__, class_ls.id)
-        print(form)
+            key_val[form] = element
+        return key_val
+
+    def new(self, obj):
+        ''' Comentario cool '''
+        self.__session.add(obj)
+
+    def save(self):
+        ''' Comentario del save'''
+        self.__session.commit()
+
+    def delete(self, obj=None):
+        ''' Comentario del delete '''
+        if obj:
+            self.__session.delete(obj)
+
+    def reload(self):
+        ''' Comentario del inicio y reinicio de la sesion '''
+        Base.metadata.create_all(self.__engine)
+        self.__session = scoped_session(sessionmaker(expire_on_commit=False,
+                                                     bind=self.__engine))()
+
+    def close(self):
+        ''' Comentario de cierre '''
+        self.__session.close()

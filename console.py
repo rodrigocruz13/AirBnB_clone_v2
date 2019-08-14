@@ -43,7 +43,7 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
-            obj.save()
+            storage.save()
             store = storage.all()
             key = my_list[0] + '.' + obj.id
             v = store[key]
@@ -59,7 +59,7 @@ class HBNBCommand(cmd.Cmd):
                         v.__dict__[new_attr[0]] = eval(new_attr[1])
                     except Exception:
                         v.__dict__[new_attr[0]] = new_attr[1]
-                    v.save()
+                    v.storage.save()
             print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")
