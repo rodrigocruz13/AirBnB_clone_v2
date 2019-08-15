@@ -38,7 +38,7 @@ class DBStorage:
                                      pool_pre_ping=True)
         self.reload()
         if 'test' == env_1:
-            Base.metadata.drop_all(tables)
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         ''' Otro Comentario Cool '''

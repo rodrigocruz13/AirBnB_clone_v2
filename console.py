@@ -59,7 +59,6 @@ class HBNBCommand(cmd.Cmd):
                 obj.save()
             else:
                 raise Exception('state_id can\'t be null')
-                
             print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")
