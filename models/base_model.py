@@ -41,7 +41,6 @@ class BaseModel:
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
-                    # if getenv('HBNB_TYPE_STORAGE') == 'db':
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
@@ -87,4 +86,3 @@ class BaseModel:
         Deletes the object
         """
         models.storage.delete(self)
-
