@@ -28,6 +28,10 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program"""
         return True
 
+    def do_q(self, line):
+        """Quit command to exit the program"""
+        return True
+
     def do_EOF(self, line):
         """Quit command to exit the program at end of file"""
         return True
