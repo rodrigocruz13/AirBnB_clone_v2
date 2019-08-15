@@ -43,11 +43,7 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
-            obj.save()
-            store = storage.all()
-            key = my_list[0] + '.' + obj.id
-            v = store[key]
-            print(v)
+            #key = my_list[0] + '.' + obj.id
             if len(my_list) > 1:
                 for i in range(1, len(my_list)):
                     new_attr = my_list[i].split("=")
@@ -57,10 +53,10 @@ class HBNBCommand(cmd.Cmd):
                             new_attr[1]) - 1] == '"':
                         new_attr[1] = new_attr[1][1:-1]
                     try:
-                        v.__dict__[new_attr[0]] = eval(new_attr[1])
+                        obj.__dict__[new_attr[0]] = eval(new_attr[1])
                     except Exception:
-                        v.__dict__[new_attr[0]] = new_attr[1]
-                    v.save()
+                        obj.__dict__[new_attr[0]] = new_attr[1]
+                    obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")

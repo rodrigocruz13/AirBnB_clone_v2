@@ -54,7 +54,7 @@ class DBStorage:
             #class_ls += self.__session.query(Place).all()
             #class_ls += self.__session.query(Review).all()
         for element in class_ls:
-            form = '{}.{}'.format(type(class_ls).__name__, class_ls.id)
+            form = '{}.{}'.format(type(element).__name__, element.id)
             key_val[form] = element
         return key_val
 
