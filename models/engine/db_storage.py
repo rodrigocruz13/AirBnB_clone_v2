@@ -75,7 +75,7 @@ class DBStorage:
             class_ls += self.__session.query(City).all()
             # class_ls += self.__session.query(Amenity).all()
             class_ls += self.__session.query(Place).all()
-            # class_ls += self.__session.query(Review).all()
+            class_ls += self.__session.query(Review).all()
 
         for element in class_ls:
             form = '{}.{}'.format(type(element).__name__, element.id)

@@ -6,6 +6,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from os import getenv
 from sqlalchemy.orm import relationship
 from models.place import Place
+from models.review import Review
 
 class User(BaseModel, Base):
     """This is the class for user
@@ -24,7 +25,7 @@ class User(BaseModel, Base):
         first_name = Column(String(128), nullable=False)
         last_name = Column(String(128), nullable=False)
         places = relationship('Place', backref='user', cascade='delete')
-
+        reviews = relationship('Review', backref='user', cascade='delete')
     else:
         email = ""
         password = ""
