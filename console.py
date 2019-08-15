@@ -56,7 +56,10 @@ class HBNBCommand(cmd.Cmd):
                         obj.__dict__[new_attr[0]] = eval(new_attr[1])
                     except Exception:
                         obj.__dict__[new_attr[0]] = new_attr[1]
-                    obj.save()
+                obj.save()
+            else:
+                raise Exception('state_id can\'t be null')
+                
             print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")
