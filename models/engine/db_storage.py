@@ -70,7 +70,7 @@ class DBStorage:
             class_ls = self.__session.query(cls).all()
 
         else:
-            # class_ls += self.__session.query(User).all()
+            class_ls += self.__session.query(User).all()
             class_ls += self.__session.query(State).all()
             class_ls += self.__session.query(City).all()
             # class_ls += self.__session.query(Amenity).all()
