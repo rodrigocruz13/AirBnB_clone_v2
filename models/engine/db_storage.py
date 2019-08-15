@@ -74,7 +74,7 @@ class DBStorage:
             class_ls += self.__session.query(State).all()
             class_ls += self.__session.query(City).all()
             # class_ls += self.__session.query(Amenity).all()
-            # class_ls += self.__session.query(Place).all()
+            class_ls += self.__session.query(Place).all()
             # class_ls += self.__session.query(Review).all()
 
         for element in class_ls:
