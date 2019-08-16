@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, Float, String, ForeignKey
 from os import getenv
+from sqlalchemy import Table
 from sqlalchemy.orm import relationship
 from models.review import Review
 
@@ -16,7 +17,6 @@ place_id, a string of 60 characters foreign key of places.id, primary
 key in the table and never null
 amenity_id, a string of 60 characters foreign key of amenities.id,
 primary key in the table and never null
-
 """
 
 place_amenity = Table('place_amenity', Base.metadata,
@@ -27,7 +27,6 @@ place_amenity = Table('place_amenity', Base.metadata,
                              String(60),
                              ForeignKey('amenities.id'),
                              primary_key=True, nullable=False))
-
 
 """
 Update Place class:
@@ -99,8 +98,13 @@ class Place(BaseModel, Base):
                     review_ls.append(v)
             return review_ls
 
+        """
+        Getter attribute amenities that returns the list of Amenity instances
+        based on the attribute amenity_ids that contains all Amenity.id linked
+        to the Place
+        """
         @property
-        def reviews(self):
+        def amenities(self):
             amenities_ls = []
             objects = storage.all(Amenity)
             for k, v in objects.items():
@@ -108,14 +112,12 @@ class Place(BaseModel, Base):
                     amenities_ls.append(v)
             return amenities_ls
 
-"""
-Setter attribute amenities that handles append method for adding an
-Amenity.id to the attribute amenity_ids. This method should accept
-only Amenity object, otherwise, do nothing.
-"""
-
-        @property
-        def set_age(self, obj):
+        """
+        Setter attribute amenities that handles append method for adding an
+        Amenity.id to the attribute amenity_ids. This method should accept
+        only Amenity object, otherwise, do nothing.
+        """
+        @amenities.setter
+        def amenities(self, obj):
             if isinstance(obj, Amenity):
-                amenity_id.append(obj.id)
-
+                amenity_ids.append(obj.id)
