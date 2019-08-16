@@ -8,6 +8,7 @@ import models
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime
+from os import getenv
 
 Base = declarative_base()
 
@@ -37,10 +38,16 @@ class BaseModel:
             updated_at: updated date
         """
         if kwargs:
+            if 'id' not in kwargs.values():
+                self.id = str(uuid.uuid4())
+            if 'created_at' not in kwargs.values():
+                self.created_at = datetime.now()
+            if 'updated_at' not in kwargs.values():
+                self.updated_at = datetime.now()
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-                if key != "__class__":
+                if key != "__class__":   
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
