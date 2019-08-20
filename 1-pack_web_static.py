@@ -17,13 +17,6 @@ def do_pack():
     full_date = now().strftime("%Y%m%d%H%M%S")
     full_name = "versions/web_static_{}.tgz".format(full_date)
 
-    """ c = create, v = verbose, z = zip, f = file """
-    local("tar -cvzf {} web_static".format(full_name))
-    return full_name
-
-    except:
-        return None
-
     with tarfile.open(full_name, "w:gz") as tar:
         tar.add("web_static", arcname=os.path.basename("web_static"))
     if os.path.exists(full_name):
