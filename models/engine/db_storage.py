@@ -1,4 +1,4 @@
-#!/bin/bash:python3
+#!/usr/bin/python3
 """
 This is the Database storage class for AirBnB:
 """

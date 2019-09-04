@@ -31,7 +31,7 @@ class FileStorage:
             my_dict = {}
             for key, value in self.__objects.items():
                 if (key.split(".")[0] == cls.__name__):
-                    my_dict[key] = value.to_dict()
+                    my_dict.update({[key: value})
             return my_dict
         return self.__objects
 
