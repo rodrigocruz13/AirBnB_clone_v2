@@ -126,4 +126,4 @@ class DBStorage:
         transaction in progress.
         """
 
-        self.__session.remove()
+        self.__session.close()
