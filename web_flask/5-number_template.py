@@ -48,11 +48,11 @@ def show_n_is_number(n):
     # show if n is number the text n is a number
     return '%d is a number' % n
 
+
 @app.route('/number_template/<int:n>')
 def show_n_number_template(n):
     # show if n is number the text n is a number
-    return render_template('/5-number.html', n = n)
-
+    return render_template('/5-number.html', n=n)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
